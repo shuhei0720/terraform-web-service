@@ -34,4 +34,21 @@ resource "aws_s3_bucket_public_access_block" "web-service-prod-alb-access-log-27
   block_public_policy = true # S3バケットのパブリックバケットポリシーをブロックするかどうか
   ignore_public_acls = true # S3バケットのパブリックACLを無視するかどうか
   restrict_public_buckets = true # S3バケットのパブリックバケットポリシーを制限するかどうか
+}
+
+###################################
+#　ライフサイクルルールの定義
+###################################
+
+# 180日経過したファイルは自動的に削除する
+
+resource "aws_s3_bucket_lifecycle_configuration" "web-service-prod-alb-access-log-276229188355-lifecycle-configuration" {
+  bucket = aws_s3_bucket.web-service-prod-alb-access-log-276229188355.id
+  rule {
+    status = "Enabled"
+    id = "default"
+    expiration {
+      days = "180"
+    }
+  }
 } 
