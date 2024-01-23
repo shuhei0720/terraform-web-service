@@ -164,3 +164,28 @@ resource "aws_route" "web-service-prod-ec2-a-subnet-route-01" {
   route_table_id = aws_route_table.web-service-prod-ec2-a-subnet-routetable.id
   nat_gateway_id = aws_nat_gateway.web-service-prod-natgateway.id
 }
+
+######################################
+#　サブネットとルートテーブルの紐づけ
+######################################
+
+# web-service-prod-alb-a-subnetとweb-service-prod-a-subnet-routetableの紐づけ
+
+resource "aws_route_table_association" "web-service-prod-alb-a-subnet-routetable-association-01" {
+  subnet_id = aws_subnet.web-service-prod-alb-a-subnet.id
+  route_table_id = aws_route_table.web-service-prod-alb-a-subnet-routetable.id
+}
+
+# web-service-prod-alb-c-subnetとweb-service-prod-c-subnet-routetableの紐づけ
+
+resource "aws_route_table_association" "web-service-prod-alb-c-subnet-routetable-association-01" {
+  subnet_id = aws_subnet.web-service-prod-alb-c-subnet.id
+  route_table_id = aws_route_table.web-service-prod-alb-c-subnet-routetable.id
+}
+
+# web-service-prod-ec2-a-subnetとweb-service-prod-ec2-a-subnet-routetableの紐づけ
+
+resource "aws_route_table_association" "web-service-prod-ec2-a-subnet-routetable-association-01" {
+  subnet_id = aws_subnet.web-service-prod-ec2-a-subnet.id
+  route_table_id = aws_route_table.web-service-prod-ec2-a-subnet-routetable.id
+}
