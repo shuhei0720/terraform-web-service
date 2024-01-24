@@ -2,6 +2,18 @@
 #　セキュリティグループの作成
 ############################################
 
+# ALB用セキュリティグループ
+
+resource "aws_security_group" "web-service-prod-alb-securitygroup" {
+  name = "web-service-prod-alb-securitygroup"
+  vpc_id = aws_vpc.vpc.id
+  tags = {
+    Name = "web-service-prod-alb-securitygroup",
+    Project = "web-service",
+    Env = "prod"
+  }
+}
+
 # web-a用セキュリティグループ
 
 resource "aws_security_group" "web-service-prod-web-a-securitygroup" {
