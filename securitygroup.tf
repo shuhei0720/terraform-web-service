@@ -44,6 +44,43 @@ resource "aws_security_group" "web-service-prod-web-b-securitygroup" {
 #　セキュリティグループのルールの作成
 ############################################
 
+# ALB用セキュリティグループのインバウンドルール 01
+# 443/TCPで受け付ける
+
+resource "aws_security_group_rule" "web-service-prod-alb-securitygroup-ingress-rule01" {
+  description = "From Internet with 443"
+  from_port = "443"
+  to_port = "443"
+  protocol = "tcp"
+  type = "ingress"
+  cidr_blocks = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.web-service-prod-alb-securitygroup.id
+}
+
+# ALB用セキュリティグループのインバウンドルール 02
+# 80/TCPで受け付けて443/TCPにリダイレクトする
+
+resource "aws_security_group_rule" "web-service-prod-alb-securitygroup-ingress-rule02" {
+  description = "From Internet with 80"
+  from_port = "80"
+  to_port = "80"
+  protocol = "tcp"
+  type = "ingress"
+  cidr_blocks = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.web-service-prod-alb-securitygroup.id
+}
+
+# ALB用セキュリティグループのアウトバウンドルール 01
+
+resource "aws_security_group_rule" "web-service-prod-alb-securitygroup-egress-rule01" {
+  from_port = 0
+  to_port = 0
+  protocol = "-1"
+  type = "egress"
+  cidr_blocks = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.web-service-prod-alb-securitygroup.id
+}
+
 # web-a用セキュリティグループのインバウンドルール 01
 # ALBから80/TCPでリッスンする
 
