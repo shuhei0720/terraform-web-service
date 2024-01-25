@@ -103,3 +103,21 @@ resource "aws_lb_target_group" "web-service-prod-web-b-80-tg" {
     NewRelicEnv = "prod"
   }
 }
+
+######################################################################
+#　ターゲットグループへターゲット(EC2インスタンス)登録
+######################################################################
+
+# web-service-prod-web-a-80-tgへweb-aを登録
+
+resource "aws_lb_target_group_attachment" "web-service-prod-web-a-80-tg-attachment" {
+  target_group_arn = aws_lb_target_group.web-service-prod-web-a-80-tg.arn
+  target_id = aws_instance.web-service-prod-web-a.id
+}
+
+# web-service-prod-web-b-80-tgへweb-b登録
+
+resource "aws_lb_target_group_attachment" "web-service-prod-web-b-80-tg-attachment" {
+  target_group_arn = aws_lb_target_group.web-service-prod-web-b-80-tg.arn
+  target_id = aws_instance.web-service-prod-web-b.id
+}
