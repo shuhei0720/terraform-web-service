@@ -78,7 +78,9 @@ resource "aws_internet_gateway" "web-service-prod-internetgateway" {
 # NATゲートウェイ用にEIPを1つ取得する
 
 resource "aws_eip" "web-service-prod-natgateway-eip" {
-  vpc = true
+  # warningが出たため、domain = "vpc" に修正
+  # vpc = true
+  domain = "vpc"
   tags = {
     Name = "web-service-prod-natgateway-eip",
     Project = "web-service",
