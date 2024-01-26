@@ -26,3 +26,20 @@ resource "aws_route53_record" "shuhei-click" {
   type = each.value.type
   zone_id = data.aws_route53_zone.shuhei-click.zone_id
 }
+
+##########################################################
+#　　Route53レコードの作成
+##########################################################
+
+# ドメインshuhei.clickのレコード
+
+resource "aws_route53_record" "shuhei-click-record" {
+  zone_id = data.aws_route53_zone.shuhei-click.zone_id
+  name = data.aws_route53_zone.shuhei-click.name
+  type = "A"
+  alias {
+    name = aws_lb.web-service-prod-alb.dns_name
+    zone_id = aws_lb.web-service-prod-alb.zone_id
+    evaluate_target_health = true
+  }
+}
