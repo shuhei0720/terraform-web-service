@@ -121,3 +121,29 @@ resource "aws_lb_target_group_attachment" "web-service-prod-web-b-80-tg-attachme
   target_group_arn = aws_lb_target_group.web-service-prod-web-b-80-tg.arn
   target_id = aws_instance.web-service-prod-web-b.id
 }
+
+######################################################################
+#　　リスナールールの作成
+######################################################################
+
+# リスナールール1
+# https://shuhei.click/web-bへのアクセスがあった場合は
+# ターゲットグループweb-service-prod-web-b-80-tg(web-b所属)へ転送
+
+resource "aws_lb_listener_rule" "web-service-prod-alb-443-listener-rule-01" {
+  listener_arn = aws_alb_listener.web-service-prod-alb-443-listener.arn
+  # 優先順位
+  priority = 1
+  action {
+    type = "forward"
+    target_group_arn = aws_lb_target_group.web-service-prod-web-b-80-tg.arn
+  }
+  condition {
+    path_pattern {
+      values = [
+        "/web-b",
+        "/web-b/*"
+      ]
+    }
+  }
+}
