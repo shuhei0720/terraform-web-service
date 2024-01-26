@@ -122,6 +122,54 @@ resource "aws_lb_target_group_attachment" "web-service-prod-web-b-80-tg-attachme
   target_id = aws_instance.web-service-prod-web-b.id
 }
 
+#################################
+#　　リスナーの作成
+#################################
+
+# 80→443(HTTPリダイレクト)
+
+resource "aws_alb_listener" "web-service-prod-alb-http-to-https-redirect-listener" {
+  load_balancer_arn = aws_lb.web-service-prod-alb.arn
+  port = "80"
+  protocol = "HTTP"
+  default_action {
+    type = "redirect"
+    redirect {
+      port = "443"
+      protocol = "HTTPS"
+      status_code = "HTTP_301"
+    }
+  }
+  tags = {
+    Name = "web-service-prod-alb-http-to-https-redirect-listener",
+    Project = "web-service",
+    Env = "prod"
+  }
+}
+
+
+# web-service用リスナー 443→80(HTTPS)
+
+resource "aws_alb_listener" "web-service-prod-alb-443-listener" {
+  load_balancer_arn = aws_lb.web-service-prod-alb.arn
+  port = "443"
+  protocol = "HTTPS"
+  ssl_policy = "ELBSecurityPolicy-TLS13-1-2-2021-06"
+  # ACM証明書をHTTPSリスナーに関連付け
+  certificate_arn = aws_acm_certificate.shuhei-click.arn
+
+  # デフォルトではweb-aに転送
+  default_action {
+    target_group_arn = aws_lb_target_group.web-service-prod-web-a-80-tg.arn
+    type = "forward"
+  }
+  tags = {
+    Name = "web-service-prod-alb-443-listener",
+    Project = "web-service",
+    Env = "prod"
+  }
+} 
+
 ######################################################################
 #　　リスナールールの作成
 ######################################################################
