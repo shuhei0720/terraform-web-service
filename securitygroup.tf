@@ -53,6 +53,7 @@ resource "aws_security_group_rule" "web-service-prod-alb-securitygroup-ingress-r
   to_port = "443"
   protocol = "tcp"
   type = "ingress"
+  #  tfsec:ignore:aws-ec2-no-public-ingress-sgr
   cidr_blocks = ["0.0.0.0/0"]
   security_group_id = aws_security_group.web-service-prod-alb-securitygroup.id
 }
