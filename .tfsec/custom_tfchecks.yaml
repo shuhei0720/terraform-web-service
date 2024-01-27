@@ -1,0 +1,17 @@
+checks:
+  -  code: custom-environment-check
+     description: Custom check to put tag for environment in EC2 instances
+     impact: We don't know Environment
+     resolution: Add the Environment tag of dev test stg prod
+     requiredTypes:
+     - resource
+     requiredLabels:
+     - aws_instance
+     severity: HIGH
+     matchSpec:
+       name: tags
+       action: contains
+       value: Env
+     errorMessage: The required Environment tag was missing
+     relatedLinks:
+     - http://xxxx.com/rules/aws/tagging.html
