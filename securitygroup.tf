@@ -67,6 +67,7 @@ resource "aws_security_group_rule" "web-service-prod-alb-securitygroup-ingress-r
   to_port = "80"
   protocol = "tcp"
   type = "ingress"
+  # checkov:skip=CKV_AWS_260:80 port from internet skip
   cidr_blocks = ["0.0.0.0/0"]
   security_group_id = aws_security_group.web-service-prod-alb-securitygroup.id
 }
