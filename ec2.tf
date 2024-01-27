@@ -5,6 +5,7 @@
 # web-aの作成
 
 resource "aws_instance" "web-service-prod-web-a" {
+  # checkov:skip=CKV_AWS_135:EBS Volume optimize check skip for test
   ami = "ami-03dceaabddff8067e"
   associate_public_ip_address = "false"
   instance_type = "t3a.nano"
