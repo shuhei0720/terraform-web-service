@@ -1,0 +1,13 @@
+---
+metadata:
+  id: CUSTOM_ENV_TAG_CHECK_RULE_01
+  name: Ensure resources hava a Env tag
+  category: "Tag Check"
+  severity: "HIGH"
+definition:
+  and:
+    - cond_type: "attribute"
+      resource_types:
+        - aws_instance
+      attribute: "tags.Env"
+      operator: "exists"
